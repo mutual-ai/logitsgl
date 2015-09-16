@@ -45,6 +45,7 @@
 
 //Sgl optimizer
 #include <sgl.h>
+#include "pkg_c_config.h"
 
 //logistic regression objective
 #include "logit_objective.h"
@@ -171,15 +172,6 @@ extern "C" {
 
 void R_init_logitsgl(DllInfo *info)
 {
-	// Print warnings
-#ifndef SGL_OPENMP_SUPP
-    Rcout << "NOTE : openMP (multithreading) is not supported on this system" << std::endl;
-#endif
-
-#ifdef SGL_DEBUG
-	Rcout << "WARNING : debugging is turned on -- this may increase the runtime" << std::endl;
-#endif
-
-// Register the .Call routines.
+	// Register the .Call routines.
 	R_registerRoutines(info, NULL, sglCallMethods, NULL, NULL);
 }

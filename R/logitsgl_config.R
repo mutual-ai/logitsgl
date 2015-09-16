@@ -89,3 +89,13 @@ logitsgl.algorithm.config <- function(tolerance_penalized_main_equation_loop = 1
 #' @author Martin Vicnet
 #' @export
 logitsgl.standard.config <- logitsgl.algorithm.config();
+
+#' Featch information about the C side configuration of the package
+#' @return list
+#' 
+#' @author Martin Vicnet
+#' @useDynLib lsgl r_pkg_c_config
+#' @export
+logitsgl.c.config <- function() {
+	.Call("r_pkg_c_config")
+}
