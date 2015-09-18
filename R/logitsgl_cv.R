@@ -41,7 +41,7 @@
 #' \item{features}{number of features used in the models}
 #' \item{parameters}{number of parameters used in the models.}
 #' @author Martin Vincent
-#' @useDynLib logitsgl .registration=TRUE
+#' @useDynLib logitsgl, .registration=TRUE
 #' @export
 logitsgl.cv <- function(x, y, intercept = TRUE,
 		grouping = factor(1:ncol(x)), 

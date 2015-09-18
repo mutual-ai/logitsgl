@@ -94,7 +94,7 @@ logitsgl.standard.config <- logitsgl.algorithm.config();
 #' @return list
 #' 
 #' @author Martin Vicnet
-#' @useDynLib lsgl r_pkg_c_config
+#' @useDynLib logitsgl r_pkg_c_config
 #' @export
 logitsgl.c.config <- function() {
 	.Call("r_pkg_c_config")

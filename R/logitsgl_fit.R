@@ -49,7 +49,7 @@
 #' \item{objective}{the values of the objective function (i.e. loss + penalty).}
 #' \item{lambda}{the lambda values used.}
 #' @author Martin Vincent
-#' @useDynLib logitsgl .registration=TRUE
+#' @useDynLib logitsgl, .registration=TRUE
 #' @export
 #' @import Matrix
 #' @import sglOptim
@@ -134,7 +134,7 @@ logitsgl <- function(x, y, intercept = TRUE,
 #' @param algorithm.config the algorithm configuration to be used. 
 #' @return a vector of length \code{d} containing the compute lambda sequence.
 #' @author Martin Vincent
-#' @useDynLib logitsgl .registration=TRUE
+#' @useDynLib logitsgl, .registration=TRUE
 #' @export
 logitsgl.lambda <- function(x, y, intercept = TRUE, 
 		grouping = factor(1:ncol(x)), 

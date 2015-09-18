@@ -23,14 +23,16 @@
 #' @title Compute error rates 
 #' 
 #' @description
-#' Compute and return the error
-#' TODO
-#' for each model.
+#' Compute error rates for each model.
+#' If \code{type = "rate"} then the misclassification rates will be computed.
+#' If \code{type = "count"} then the misclassification counts will be computed.
+#' If \code{type = "loglike"} then the negative log likelihood error will be computed.
 #' 
 #' @param object a logitsgl object
 #' @param data a design matrix (the \eqn{X} matrix)
 #' @param response redirected to \code{y}
-#' @param y a matrix of the true responses (the \eqn{Y} matrix)
+#' @param Y a matrix of the true responses (the \eqn{Y} matrix)
+#' @param type type of error rate
 #' @param ... ignored
 #' @return a vector of error rates
 #' 

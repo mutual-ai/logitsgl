@@ -33,16 +33,21 @@
 #' @author Martin Vincent
 #' @method predict logitsgl
 #' @export
-#' @useDynLib logitsgl .registration=TRUE
+#' @useDynLib logitsgl, .registration=TRUE
 predict.logitsgl <- function(object, x, sparse.data = is(x, "sparseMatrix"), ...) 
 {
 	# Get call
 	cl <- match.call()
 	
+	if(is.null(object$beta)) stop("No models found -- missing beta")
+		
 	if(object$intercept){
 		# add intercept
 		x <- cBind(Intercept = rep(1, nrow(x)), x)
 	}	
+	
+	#Check dimension of x
+	if(dim(object$beta[[2]])[2] != ncol(x)) stop("x has wrong dimension")
 	
 	data <- list()
 	
