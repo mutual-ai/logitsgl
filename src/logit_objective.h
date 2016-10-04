@@ -29,6 +29,7 @@ public:
 
 	const sgl::natural n_samples;
 	const sgl::natural n_responses;
+	const sgl::natural n_variables;
 
 private:
 
@@ -53,6 +54,7 @@ public:
 	LogitLoss()
 			: 	n_samples(0),
 				n_responses(0),
+				n_variables(0),
 				norm_const(0),
 				Y(sgl::null_matrix),
 				W(sgl::null_vector),
@@ -62,7 +64,8 @@ public:
 
 	LogitLoss(data_type const& data)
 			: 	n_samples(data.get_A().n_samples),
-				n_responses(data.get_B().n_groups),
+				n_responses(data.get_B().n_responses),
+				n_variables(data.get_B().n_responses),
 				norm_const(n_samples),
 				Y(data.get_B().response),
 				W(data.get_C().data),
