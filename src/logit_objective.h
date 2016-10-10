@@ -25,10 +25,14 @@
 template < typename type_X, typename type_Y >
 class LogitLoss {
 
-public:
-
+private:
+	
 	const sgl::natural n_samples;
 	const sgl::natural n_responses;
+
+public:
+
+
 	const sgl::natural n_variables;
 
 private:
