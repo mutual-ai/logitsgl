@@ -26,9 +26,13 @@ template < typename type_X, typename type_Y >
 class LogitLoss {
 
 public:
+	const sgl::natural n_variables;
 
-	const sgl::natural n_samples;
-	const sgl::natural n_responses;
+	typedef sgl::hessian_diagonal<false> hessian_type;
+
+	typedef sgl::DataPackage_2< sgl::MatrixData<type_X>,
+				sgl::MultiResponse<type_Y, 'Y'> > data_type;
+
 
 private:
 
@@ -37,23 +41,15 @@ private:
 
 public:
 
-	typedef sgl::hessian_diagonal<false> hessian_type;
-
-	typedef sgl::DataPackage_2< sgl::MatrixData<type_X>,
-				sgl::MultiResponse<type_Y, 'Y'> > data_type;
-
 	LogitLoss() :
-				n_samples(0),
-				n_responses(0),
+				n_variables(0),
 				Y(sgl::null_matrix),
-				prob(n_samples, n_responses) {
-	}
+				prob(sgl::null_matrix) {}
 
 	LogitLoss(data_type const& data) :
-				n_samples(data.get_A().n_samples),
-				n_responses(data.get_B().n_groups),
+				n_variables(data.get_B().n_responses),
 				Y(data.get_B().response),
-				prob(n_samples, n_responses) {
+				prob(data.get_A().n_samples, n_variables) {
 	}
 
 	void set_lp(sgl::matrix const& lp)

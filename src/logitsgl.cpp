@@ -164,7 +164,7 @@ static const R_CallMethodDef sglCallMethods[] = {
 		SGL_PREDICT(logitsgl_xd_ys), SGL_PREDICT(logitsgl_xs_ys),
 		SGL_SUBSAMPLING(logitsgl_xd_yd), SGL_SUBSAMPLING(logitsgl_xs_yd),
 		SGL_SUBSAMPLING(logitsgl_xd_ys), SGL_SUBSAMPLING(logitsgl_xs_ys),
-		NULL};
+		{NULL} };
 
 extern "C" {
 	void R_init_logitsgl(DllInfo *info);
