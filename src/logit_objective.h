@@ -32,48 +32,32 @@ public:
 
 private:
 
-	const double norm_const;
-
 	type_Y const& Y; //response - 0 1 matrix of size n_samples x n_responses
-	sgl::vector const& W; //vector of size n_samples
-
-	sgl::matrix lp; //linear predictors - matrix of size n_samples x n_responses
-
 	sgl::matrix prob; //probabilities
 
 public:
 
 	typedef sgl::hessian_diagonal<false> hessian_type;
-	//typedef sgl::hessian_full<false> hessian_type;
 
-	typedef sgl::DataPackage_3< sgl::MatrixData<type_X>,
-				sgl::MultiResponse<type_Y, 'Y'>,
-				sgl::Data<sgl::vector, 'W'> > data_type;
+	typedef sgl::DataPackage_2< sgl::MatrixData<type_X>,
+				sgl::MultiResponse<type_Y, 'Y'> > data_type;
 
-	LogitLoss()
-			: 	n_samples(0),
+	LogitLoss() :
+				n_samples(0),
 				n_responses(0),
-				norm_const(0),
 				Y(sgl::null_matrix),
-				W(sgl::null_vector),
-				lp(n_samples, n_responses),
 				prob(n_samples, n_responses) {
 	}
 
-	LogitLoss(data_type const& data)
-			: 	n_samples(data.get_A().n_samples),
+	LogitLoss(data_type const& data) :
+				n_samples(data.get_A().n_samples),
 				n_responses(data.get_B().n_groups),
-				norm_const(n_samples),
 				Y(data.get_B().response),
-				W(data.get_C().data),
-				lp(n_samples, n_responses),
 				prob(n_samples, n_responses) {
 	}
 
 	void set_lp(sgl::matrix const& lp)
 	{
-		this->lp = lp;
-
 		prob = exp(lp);
 		prob = prob/(1+prob);
 
@@ -82,15 +66,13 @@ public:
 
 	void set_lp_zero()
 	{
-		lp.zeros(n_samples, n_responses);
-
-		prob = exp(lp);
+		prob.ones();
 		prob = prob/(1+prob);
 	}
 
 	const sgl::matrix gradients() const
 	{
-		return -trans(Y - prob)/norm_const;
+		return -trans(Y - prob);
 	}
 
 	void compute_hessians() const
@@ -100,12 +82,12 @@ public:
 
     const sgl::vector hessians(sgl::natural i) const
 	{
-		return -trans(square(prob.row(i))-prob.row(i))/norm_const;
+		return -trans(square(prob.row(i))-prob.row(i));
 	}
 
 	const sgl::numeric sum_values() const
 	{
-		return -accu(Y%log(prob)-Y%log(1-prob)+log(1-prob))/norm_const;
+		return -accu(Y%log(prob)-Y%log(1-prob)+log(1-prob));
 	}
 
 };
