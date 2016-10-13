@@ -5,7 +5,7 @@
 \title{Compute error rates}
 \usage{
 \method{Err}{logitsgl}(object, data = NULL, response = object$Y.true,
-  Y = response, type = "rate", ...)
+  y = response, type = "rate", ...)
 }
 \arguments{
 \item{object}{a logitsgl object}
@@ -14,11 +14,11 @@
 
 \item{response}{redirected to \code{y}}
 
-\item{Y}{a matrix of the true responses (the \eqn{Y} matrix)}
-
 \item{type}{type of error rate}
 
 \item{...}{ignored}
+
+\item{Y}{a matrix of the true responses (the \eqn{Y} matrix)}
 }
 \value{
 a vector of error rates

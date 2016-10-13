@@ -61,6 +61,9 @@
 #'
 #' # print some information
 #' fit
+#'
+#' # Traning error
+#' Err(fit, X)
 #' @useDynLib logitsgl, .registration=TRUE
 #' @export
 #' @import Matrix

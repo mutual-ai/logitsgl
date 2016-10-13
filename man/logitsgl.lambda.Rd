@@ -37,6 +37,14 @@ a vector of length \code{d} containing the compute lambda sequence.
 Computes a decreasing lambda sequence of length \code{d}.
 The sequence ranges from a data determined maximal lambda \eqn{\lambda_\textrm{max}} to the user inputed \code{lambda.min}.
 }
+\examples{
+data(birds)
+
+# Simple standardization
+X <- scale(X)
+
+logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+}
 \author{
 Martin Vincent
 }

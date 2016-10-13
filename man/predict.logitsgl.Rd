@@ -24,5 +24,16 @@ Compute the predicted response matrix for a new data set.
 }
 \author{
 Martin Vincent
+data(birds)
+
+# Simple standardization
+X <- scale(X)
+
+lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+
+fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+
+# training errors
+res <- predict(fit, X)
 }
 

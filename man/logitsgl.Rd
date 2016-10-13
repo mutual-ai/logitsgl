@@ -53,6 +53,11 @@ data(birds)
 X <- scale(X)
 
 lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+
+fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+
+# print some information
+fit
 }
 \author{
 Martin Vincent

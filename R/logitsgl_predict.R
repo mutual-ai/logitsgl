@@ -21,7 +21,7 @@
 
 #' @title Predict
 #'
-#' @description 
+#' @description
 #' Compute the predicted response matrix for a new data set.
 #'
 #' @param object an object of class logitsgl, produced with \code{logitsgl}.
@@ -31,50 +31,64 @@
 #' @return
 #' \item{Yhat}{the predicted response matrix (of size \eqn{N_\textrm{new} \times K})}
 #' @author Martin Vincent
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#'
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#'
+#' # training errors
+#' res <- predict(fit, X)
 #' @method predict logitsgl
 #' @export
 #' @useDynLib logitsgl, .registration=TRUE
-predict.logitsgl <- function(object, x, sparse.data = is(x, "sparseMatrix"), ...) 
+predict.logitsgl <- function(object, x, sparse.data = is(x, "sparseMatrix"), ...)
 {
 	# Get call
 	cl <- match.call()
-	
+
 	if(is.null(object$beta)) stop("No models found -- missing beta")
-		
+
 	if(object$intercept){
 		# add intercept
 		x <- cBind(Intercept = rep(1, nrow(x)), x)
-	}	
-	
+	}
+
 	#Check dimension of x
 	if(dim(object$beta[[2]])[2] != ncol(x)) stop("x has wrong dimension")
-	
+
 	data <- list()
-	
+	data$sparseX <- FALSE
+	data$sample.names <- rownames(x)
+	data$n.samples <- nrow(x)
+
 	if(sparse.data) {
-		
+
 		x <- as(x, "CsparseMatrix")
 		data$X <- list(dim(x), x@p, x@i, x@x)
-		
+
 		res <- sgl_predict("logitsgl_xs_yd", "logitsgl", object, data)
-		
+
 	} else {
-		
+
 		data$X <- as.matrix(x)
-		
+
 		res <- sgl_predict("logitsgl_xd_yd", "logitsgl", object, data)
-		
+
 	}
-	
+
 	#Responses
-	res$P <- lapply(res$responses$prob[,1], t)
+	res$P <- lapply(res$responses$prob, t)
 	res$link <- lapply(res$responses$link, t)
 	res$Yhat <- lapply(res$responses$classes, t)
 	res$responses <- NULL
-	
+
 	#TODO response dimnames
-	
+
 	res$call <- cl
-	
+
 	return(res)
 }
