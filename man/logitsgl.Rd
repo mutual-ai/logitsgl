@@ -16,7 +16,7 @@ logitsgl(x, y, intercept = TRUE, grouping = factor(1:ncol(x)),
 
 \item{intercept}{should the model include intercept parameters}
 
-\item{grouping}{grouping of features, a factor or vector of length \eqn{p}. 
+\item{grouping}{grouping of features, a factor or vector of length \eqn{p}.
 Each element of the factor/vector specifying the group of the feature.}
 
 \item{groupWeights}{the group weights, a vector of length \eqn{m} (the number of groups).}
@@ -30,7 +30,7 @@ Each element of the factor/vector specifying the group of the feature.}
 \item{algorithm.config}{the algorithm configuration to be used.}
 }
 \value{
-\item{beta}{the fitted parameters -- the list \eqn{\hat\beta(\lambda(1)), \dots, \hat\beta(\lambda(d))} of length \code{length(return)}. 
+\item{beta}{the fitted parameters -- the list \eqn{\hat\beta(\lambda(1)), \dots, \hat\beta(\lambda(d))} of length \code{length(return)}.
 With each entry of list holding the fitted parameters, that is matrices of size \eqn{K\times p} (if \code{intercept = TRUE} matrices of size \eqn{K\times (p+1)})}
 \item{loss}{the values of the loss function.}
 \item{objective}{the values of the objective function (i.e. loss + penalty).}
@@ -45,6 +45,14 @@ This function computes a sequence of minimizers (one for each lambda given in th
 where \eqn{\|\cdot\|_F} is the frobenius norm.
 The vector \eqn{\beta^{(J)}} denotes the parameters associated with the \eqn{J}'th group of features.
 The group weights are denoted by \eqn{\gamma \in [0,\infty)^m} and the parameter weights by \eqn{\xi \in [0,\infty)^n}.
+}
+\examples{
+data(birds)
+
+# Simple standardization
+X <- scale(X)
+
+lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
 }
 \author{
 Martin Vincent
