@@ -15,3 +15,7 @@ r:
 warnings_are_errors: false
 
 sudo: required
+
+# install sglOptim
+r_github_packages:
+ - vincent-dk/sglOptim
