@@ -27,16 +27,10 @@ class LogitResponse {
 
 public:
 
-	//TODO clean up - more efficient mem use
-//	sgl::vector const prob;
-//	sgl::vector const predicted_class; // 0 or 1
 	sgl::vector const linear_predictors;
 
 	LogitResponse(sgl::vector const& linear_predictors) :
-//		prob(exp(linear_predictors)/(1+exp(linear_predictors))),
-//		predicted_class(arma::conv_to<sgl::vector>::from(prob > 0.5)),
-		linear_predictors(linear_predictors) {
-	}
+		linear_predictors(linear_predictors) {}
 
 	//Needed so that we can use fields
 	LogitResponse() :

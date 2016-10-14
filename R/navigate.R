@@ -19,7 +19,6 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
-#TODO loss function
 #' @title Compute error rates
 #'
 #' @description
@@ -31,7 +30,7 @@
 #' @param object a logitsgl object
 #' @param data a design matrix (the \eqn{X} matrix)
 #' @param response redirected to \code{y}
-#' @param Y a matrix of the true responses (the \eqn{Y} matrix)
+#' @param y a matrix of the true responses (the \eqn{Y} matrix)
 #' @param type type of error rate
 #' @param ... ignored
 #' @return a vector of error rates
@@ -112,13 +111,19 @@ parameters.logitsgl <- function(object, ...) {
 	return(parameters(object))
 }
 
-#' @title Returns the number of models in a lsgl object
+#' @title Number of models used for fitting
 #'
-#' @param object a logitsgl object
-#' @param ... ignored
-#' @return the number of models in \code{object}
+#' @description
+#' Returns the number of models used for fitting.
+#' However, note that the objects returned by \code{msgl.cv} and
+#' \code{msgl.subsampling} does not contain any models even though
+#' \code{nmod} returns a nonzero number.
+#'
+#' @param object an object
+#' @param ... additional parameters (optional)
+#' @return the number of models used when fitting the object \code{x}.
+#'
 #' @author Martin Vincent
-#' @method nmod logitsgl
 #' @import sglOptim
 #' @export
 nmod.logitsgl <- function(object, ...) {
@@ -145,15 +150,17 @@ models.logitsgl <- function(object, index = 1:nmod(object), ...) {
 	return(models(object, ...))
 }
 
-#' @title Extract nonzero coefficients
+#' @title Extracting the nonzero coefficients
+#' @description
+#' This function returns the nonzero coefficients
+#' (that is the nonzero entries of the \eqn{beta} matrices)
 #'
-#' @param object a logitsgl object
+#' @param object a sgl object
 #' @param index indices of the models
 #' @param ... ignored
-#' @return a list of length \code{length(index)} with nonzero coefficients of the models
+#' @return a list of with nonzero coefficients of the models
 #'
 #' @author Martin Vincent
-#' @method coef logitsgl
 #' @import sglOptim
 #' @export
 coef.logitsgl <- function(object, index = 1:nmod(object), ...) {

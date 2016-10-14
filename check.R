@@ -11,7 +11,7 @@ get_script_path <- function() {
     if(length(script.dir) > 1) {
       stop("can't determine script dir: more than one '--file' argument detected")
     }
-    
+
     return(script.dir)
 }
 
@@ -28,7 +28,7 @@ build_check_local <- function(pkg, path) {
   system(build_command)
 
   build_name <- paste(pkg, "_", ver, ".tar.gz", sep="")
-  install_command <- paste("R CMD check --as-cran ", build_name)
+  install_command <- paste("R CMD check ", build_name)
   system(install_command)
 }
 

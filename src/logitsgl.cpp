@@ -28,24 +28,26 @@
 //TODO remove
 //#define SGL_DEBUG_INFO_GB_OPT
 
-//Runtime checking for numerical problems
+// Runtime checking for numerical problems
 #define SGL_RUNTIME_CHECKS
 
-//Check dimension of input objects
+// Check dimension of input objects
 #define SGL_DIM_CHECKS
 
-//Converges checks
+// Converges checks
 #define SGL_CONVERGENCE_CHECK
 
-//Exception handling
+// Exception handling
 #define SGL_CATCH_EXCEPTIONS
 
-//Should the timers be activated (only needed for profiling the code)
-//#define SGL_TIMING
+// Should the timers be activated (only needed for profiling the code)
+//#define DO_TIMING
+
+// Show function entering/leaving
+//#define FUNC_ENTER
 
 //Sgl optimizer
 #include <sgl.h>
-#include "pkg_c_config.h"
 
 //logistic regression objective
 #include "logit_objective.h"
