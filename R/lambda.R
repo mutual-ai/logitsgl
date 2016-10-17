@@ -36,7 +36,7 @@ logitsgl.lambda <- function(x, y, intercept = TRUE,
 		algorithm.config = logitsgl.standard.config)
 {
 
-	if(nrow(x) != nrow(y)) {
+	if( nrow(x) != if(is.vector(y)) length(y) else nrow(y) ) {
 		stop("x and y must have the same number of rows")
 	}
 
@@ -47,13 +47,12 @@ logitsgl.lambda <- function(x, y, intercept = TRUE,
 	if(intercept) {
 		x <- cBind(Intercept = rep(1, nrow(x)), x)
 		groupWeights <- c(0, groupWeights)
-		parameterWeights <- cbind(rep(0, ncol(y)), parameterWeights)
+		parameterWeights <- cbind(rep(0, if(is.vector(y)) 1 else ncol(y)), parameterWeights)
 		grouping <- factor(c("Intercept", as.character(grouping)), levels = c("Intercept", levels(grouping)))
 	}
 
 	# create data
-	group.names <- if(is.null(colnames(y))) 1:ncol(y) else colnames(y)
-	data <- create.sgldata(x, y, group.names = group.names)
+	data <- create.sgldata(x, y)
 
   # TODO ensure ColSums(Y != 0) != 0
 

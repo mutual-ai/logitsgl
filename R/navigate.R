@@ -260,7 +260,7 @@ nmod.logitsgl <- function(object, ...) {
 #' @examples
 #' #FIXME
 #' @export
-best_model.lsgl <- function(object, ...) {
+best_model.logitsgl <- function(object, ...) {
 	class(object) <- "sgl" # Use std function
 	return(best_model(object, "logitsgl", ...))
 }

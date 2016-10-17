@@ -44,7 +44,7 @@
 #' cl <- makeCluster(2)
 #' registerDoParallel(cl)
 #'
-#' # Do cross validation using 2 threads
+#' # Do subsampling using 2 threads
 #' fit.sub <- logitsgl.subsampling(X, Y,
 #'		alpha = 0.5,
 #'		train = train,
