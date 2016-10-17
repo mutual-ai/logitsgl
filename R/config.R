@@ -40,6 +40,22 @@
 #' @param verbose If \code{TRUE} some information, regarding the status of the algorithm, will be printed in the R terminal.
 #' @return A configuration.
 #' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' # Create configuration
+#' config <- logitsgl.algorithm.config(verbose = FALSE)
+#'
+#' lambda <- logitsgl.lambda(X, Y,
+#'		alpha = 0.5,
+#'		lambda.min = 0.5,
+#'		algorithm.config = config)
+#'
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#'
 #' @export
 logitsgl.algorithm.config <- function(
 		tolerance_penalized_main_equation_loop = 1e-10,

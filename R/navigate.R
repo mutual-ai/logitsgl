@@ -25,17 +25,51 @@
 #' Compute error rates for each model.
 #' If \code{type = "rate"} then the misclassification rates will be computed.
 #' If \code{type = "count"} then the misclassification counts will be computed.
-#' If \code{type = "loglike"} then the negative log likelihood error will be computed.
+#' If \code{type = "loglike"} then the negative log-likelihood error will be computed.
 #'
 #' @param object a logitsgl object
 #' @param data a design matrix (the \eqn{X} matrix)
 #' @param response redirected to \code{y}
 #' @param y a matrix of the true responses (the \eqn{Y} matrix)
-#' @param type type of error rate
+#' @param loss type of error loss
 #' @param ... ignored
 #' @return a vector of error rates
 #'
 #' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' # Split and scale down
+#' X1 <- X[1:200, ]
+#' Y1 <- Y[1:200, 1:3]
+#' X2 <- X[201:322,]
+#' Y2 <- Y[201:322, 1:3]
+#'
+#' # Fit models using X1
+#' lambda <- logitsgl.lambda(X1, Y1, alpha = 0.5, lambda.min = 0.2)
+#' fit <- logitsgl(X1, Y1, alpha = 0.5, lambda = lambda)
+#'
+#' ## Training errors:
+#' Err(fit, X1)
+#'
+#' ## Errors predicting Y2:
+#' Err(fit, X2, Y2)
+#'
+#' # Do cross validation
+#' fit.cv <- logitsgl.cv(X1, Y1, alpha = 0.5, fold = 5, lambda = lambda)
+#'
+#' # Cross validation errors -- error rate
+#' Err(fit.cv)
+#'
+#' # Cross validation errors -- error count
+#' Err(fit.cv, loss = "count")
+#'
+#' # Cross validation errors -- negative log-likelihood
+#' Err(fit.cv, loss = "loglike")
+#'
 #' @method Err logitsgl
 #' @import sglOptim
 #' @export
@@ -43,9 +77,9 @@ Err.logitsgl <- function(object,
 	data = NULL,
 	response = object$Y.true,
 	y = response,
-	type = "rate", ... ) {
+	loss = "rate", ... ) {
 
-	if(type=="rate") {
+	if(loss == "rate") {
 		return( compute_error(object,
 			data = data,
 			response.name = "Yhat",
@@ -53,26 +87,26 @@ Err.logitsgl <- function(object,
 			loss = function(x,y) mean(x != y)))
 	}
 
-	if(type=="count") {
+	if(loss == "count") {
 		return( compute_error(object,
 			data = data,
 			response.name = "Yhat",
-			response = Y,
+			response = y,
 			loss = function(x,y) sum(x != y)))
 	}
 
-	if(type=="loglike") {
+	if(loss == "loglike") {
 
 		loss <- function(x,y) -mean(y*log(x)+(1-y)*log(1-x))
 
 		return( compute_error(object,
 			data = data,
 			response.name = "P",
-			response = Y,
+			response = y,
 			loss = loss))
 	}
 
-	stop("Unknown type")
+	stop("Unknown loss")
 
 }
 
@@ -86,6 +120,20 @@ Err.logitsgl <- function(object,
 #' @param ... ignored
 #' @return a list of of length \code{nmod(x)} containing the nonzero features (that is nonzero columns of the beta matrices)
 #' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#'
+#' # the nonzero features of model 1, 10 and 25
+#' features(fit)[c(1,10,25)]
+#'
+#' # count the number of nonzero features in each model
+#' sapply(features(fit), length)
 #' @method features logitsgl
 #' @import sglOptim
 #' @export
@@ -103,12 +151,72 @@ features.logitsgl <- function(object, ...) {
 #' @param ... ignored
 #' @return a list of length \code{nmod(x)} containing the nonzero parameters of the models.
 #' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#' #FIXME
 #' @method parameters logitsgl
 #' @import sglOptim
 #' @export
 parameters.logitsgl <- function(object, ...) {
 	class(object) <- "sgl" # Use std function
 	return(parameters(object))
+}
+
+#' @title Extract feature statistics
+#'
+#' @description
+#' Extracts the number of nonzero features (or group) in each model.
+#'
+#' @param object a logitsgl object
+#' @param ... ignored
+#' @return a vector of length \code{nmod(x)} or a matrix containing the number of nonzero features (or group) of the models.
+#'
+#' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#' ##FIXME
+#' @export
+features_stat.logitsgl <- function(object, ...) {
+	class(object) <- "sgl" # Use std function
+	return(features_stat(object, ...))
+}
+
+
+#' @title Extracting parameter statistics
+#'
+#' @description
+#' Extracts the number of nonzero parameters in each model.
+#'
+#' @param object a logitsgl object
+#' @param ... ignored
+#' @return a vector of length \code{nmod(x)} or a matrix containing the number of nonzero parameters of the models.
+#'
+#' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#' #FIXME
+#' @export
+parameters_stat.logitsgl <- function(object, ...) {
+	class(object) <- "sgl" # Use std function
+	return(parameters_stat(object, ...))
 }
 
 #' @title Number of models used for fitting
@@ -124,11 +232,37 @@ parameters.logitsgl <- function(object, ...) {
 #' @return the number of models used when fitting the object \code{x}.
 #'
 #' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#' #FIXME
 #' @import sglOptim
 #' @export
 nmod.logitsgl <- function(object, ...) {
 	class(object) <- "sgl" # Use std function
 	return(nmod(object, ...))
+}
+
+#' @title Index of best model
+#'
+#' @description
+#' Returns the index of the best model, in terms of lowest error rate
+#' @param object a logitsgl object
+#' @param ... additional parameters (ignored)
+#' @return index of the best model.
+#'
+#' @author Martin Vincent
+#' @examples
+#' #FIXME
+#' @export
+best_model.lsgl <- function(object, ...) {
+	class(object) <- "sgl" # Use std function
+	return(best_model(object, "logitsgl", ...))
 }
 
 #' @title Exstract the fitted models
@@ -142,6 +276,15 @@ nmod.logitsgl <- function(object, ...) {
 #' @return a list of \eqn{\beta} matrices.
 #'
 #' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#' #FIXME
 #' @method models logitsgl
 #' @import sglOptim
 #' @export
@@ -161,6 +304,15 @@ models.logitsgl <- function(object, index = 1:nmod(object), ...) {
 #' @return a list of with nonzero coefficients of the models
 #'
 #' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#' #FIXME
 #' @import sglOptim
 #' @export
 coef.logitsgl <- function(object, index = 1:nmod(object), ...) {

@@ -54,6 +54,23 @@ A configuration.
 \description{
 With the exception of \code{verbose} it is not recommended to change any of the default values.
 }
+\examples{
+data(birds)
+
+# Simple standardization
+X <- scale(X)
+
+# Create configuration
+config <- logitsgl.algorithm.config(verbose = FALSE)
+
+lambda <- logitsgl.lambda(X, Y,
+	alpha = 0.5,
+	lambda.min = 0.5,
+	algorithm.config = config)
+
+fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+
+}
 \author{
 Martin Vincent
 }

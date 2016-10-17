@@ -5,3 +5,4 @@
 ^check\.R$
 ^install\.R$
 ^run-tests-valgrind\.R$
+^timing-1\.R$

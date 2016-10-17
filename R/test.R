@@ -8,14 +8,28 @@
 #' @param grouping grouping of features, a factor or vector of length \eqn{p}. Each element of the factor/vector specifying the group of the feature.
 #' @param groupWeights the group weights, a vector of length \eqn{m} (the number of groups).
 #' @param parameterWeights a matrix of size \eqn{K \times p}.
-#' @return TODO
+#' @return number of detected problems
 #' @author Martin Vincent
+#' @examples
+#' data(birds)
+#'
+#' # scale down
+#' X <- X[1:100, 1:10]
+#' Y <- Y[1:100, 1:3]
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' # look for problems in objective -- this may be slow for high dimensions
+#' n_problems_detected <- test_objective_logitsgl(X, Y)
+#'
+#' if(n_problems_detected > 0) stop("problem detected in objective")
 #' @useDynLib logitsgl, .registration=TRUE
 #' @export
-logitsgl.test <- function(x, y,
+test_objective_logitsgl <- function(x, y,
 		grouping = factor(1:ncol(x)),
-		groupWeights = c(sqrt(2*ncol(y)*table(grouping))),
-		parameterWeights =  matrix(1, nrow = (ncol(y)^2-ncol(y))/2+2*ncol(y), ncol = ncol(x)))
+		groupWeights = c(sqrt(ncol(y)*table(grouping))),
+		parameterWeights =  matrix(1, nrow = ncol(y), ncol = ncol(x)))
 {
 
 	# cast

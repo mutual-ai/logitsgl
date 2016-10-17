@@ -19,6 +19,16 @@ a list of \eqn{\beta} matrices.
 \description{
 Returns the fitted models, that is the estimated \eqn{\beta} matrices.
 }
+\examples{
+data(birds)
+
+# Simple standardization
+X <- scale(X)
+
+lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#FIXME
+}
 \author{
 Martin Vincent
 }

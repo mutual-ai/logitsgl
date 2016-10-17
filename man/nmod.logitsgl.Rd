@@ -20,6 +20,16 @@ However, note that the objects returned by \code{msgl.cv} and
 \code{msgl.subsampling} does not contain any models even though
 \code{nmod} returns a nonzero number.
 }
+\examples{
+data(birds)
+
+# Simple standardization
+X <- scale(X)
+
+lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#FIXME
+}
 \author{
 Martin Vincent
 }

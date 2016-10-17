@@ -17,13 +17,14 @@
 \item{...}{ignored.}
 }
 \value{
-\item{Yhat}{the predicted response matrix (of size \eqn{N_\textrm{new} \times K})}
+\item{Yhat}{the predicted response. A list, of length \code{nmod(object)}, of matrices (of size \eqn{N_\textrm{new} \times K})}
+\item{link}{the linear predictors. A list, of length \code{nmod(object)}, of matrices  (of size \eqn{N_\textrm{new} \times K})}
+\item{prob}{the predicted probabilities. A list, of length \code{nmod(object)}, of matrices (of size \eqn{N_\textrm{new} \times K})}
 }
 \description{
 Compute the predicted response matrix for a new data set.
 }
-\author{
-Martin Vincent
+\examples{
 data(birds)
 
 # Simple standardization
@@ -35,5 +36,14 @@ fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
 
 # training errors
 res <- predict(fit, X)
+
+# print some info
+res
+
+# The predicted probabilities for model with index 100
+res$prob[[100]]
+}
+\author{
+Martin Vincent
 }
 

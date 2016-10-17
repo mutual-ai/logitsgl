@@ -29,8 +29,11 @@
 #' @param sparse.data if TRUE \code{x} will be treated as sparse, if \code{x} is a sparse matrix it will be treated as sparse by default.
 #' @param ... ignored.
 #' @return
-#' \item{Yhat}{the predicted response matrix (of size \eqn{N_\textrm{new} \times K})}
+#' \item{Yhat}{the predicted response. A list, of length \code{nmod(object)}, of matrices (of size \eqn{N_\textrm{new} \times K})}
+#' \item{link}{the linear predictors. A list, of length \code{nmod(object)}, of matrices  (of size \eqn{N_\textrm{new} \times K})}
+#' \item{prob}{the predicted probabilities. A list, of length \code{nmod(object)}, of matrices (of size \eqn{N_\textrm{new} \times K})}
 #' @author Martin Vincent
+#' @examples
 #' data(birds)
 #'
 #' # Simple standardization
@@ -42,6 +45,12 @@
 #'
 #' # training errors
 #' res <- predict(fit, X)
+#'
+#' # print some info
+#' res
+#'
+#' # The predicted probabilities for model with index 100
+#' res$prob[[100]]
 #' @method predict logitsgl
 #' @export
 #' @useDynLib logitsgl, .registration=TRUE
@@ -90,5 +99,6 @@ predict.logitsgl <- function(object, x, sparse.data = is(x, "sparseMatrix"), ...
 
 	res$call <- cl
 
+	class(res) <- "logitsgl"
 	return(res)
 }

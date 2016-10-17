@@ -69,6 +69,7 @@
 
 #include <sgl/RInterface/sgl_lambda_seq.h>
 #include <sgl/RInterface/sgl_fit.h>
+#include <sgl/RInterface/sgl_test.h>
 
 #define PREDICTOR sgl::LinearPredictor < sgl::matrix , LogitResponse >
 
@@ -93,6 +94,7 @@
 
 #include <sgl/RInterface/sgl_lambda_seq.h>
 #include <sgl/RInterface/sgl_fit.h>
+#include <sgl/RInterface/sgl_test.h>
 
 #define PREDICTOR sgl::LinearPredictor < sgl::sparse_matrix , LogitResponse >
 
@@ -117,6 +119,7 @@
 
 #include <sgl/RInterface/sgl_lambda_seq.h>
 #include <sgl/RInterface/sgl_fit.h>
+#include <sgl/RInterface/sgl_test.h>
 
 #define PREDICTOR sgl::LinearPredictor < sgl::matrix , LogitResponse >
 
@@ -143,6 +146,7 @@
 
 #include <sgl/RInterface/sgl_lambda_seq.h>
 #include <sgl/RInterface/sgl_fit.h>
+#include <sgl/RInterface/sgl_test.h>
 
 #define PREDICTOR sgl::LinearPredictor < sgl::sparse_matrix , LogitResponse >
 
@@ -158,14 +162,22 @@
 #include <R_ext/Rdynload.h>
 
 static const R_CallMethodDef sglCallMethods[] = {
+
 		SGL_LAMBDA(logitsgl_xd_yd), SGL_LAMBDA(logitsgl_xs_yd),
 		SGL_LAMBDA(logitsgl_xd_ys), SGL_LAMBDA(logitsgl_xs_ys),
+
 		SGL_FIT(logitsgl_xd_yd), SGL_FIT(logitsgl_xs_yd),
 		SGL_FIT(logitsgl_xd_ys), SGL_FIT(logitsgl_xs_ys),
+
 		SGL_PREDICT(logitsgl_xd_yd), SGL_PREDICT(logitsgl_xs_yd),
 		SGL_PREDICT(logitsgl_xd_ys), SGL_PREDICT(logitsgl_xs_ys),
+
 		SGL_SUBSAMPLING(logitsgl_xd_yd), SGL_SUBSAMPLING(logitsgl_xs_yd),
 		SGL_SUBSAMPLING(logitsgl_xd_ys), SGL_SUBSAMPLING(logitsgl_xs_ys),
+
+		SGL_TEST(logitsgl_xd_yd), SGL_TEST(logitsgl_xs_yd),
+		SGL_TEST(logitsgl_xd_ys), SGL_TEST(logitsgl_xs_ys),
+
 		{NULL} };
 
 extern "C" {

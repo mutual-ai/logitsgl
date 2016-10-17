@@ -5,7 +5,7 @@
 \title{Compute error rates}
 \usage{
 \method{Err}{logitsgl}(object, data = NULL, response = object$Y.true,
-  y = response, type = "rate", ...)
+  y = response, loss = "rate", ...)
 }
 \arguments{
 \item{object}{a logitsgl object}
@@ -16,7 +16,7 @@
 
 \item{y}{a matrix of the true responses (the \eqn{Y} matrix)}
 
-\item{type}{type of error rate}
+\item{loss}{type of error loss}
 
 \item{...}{ignored}
 }
@@ -27,7 +27,42 @@ a vector of error rates
 Compute error rates for each model.
 If \code{type = "rate"} then the misclassification rates will be computed.
 If \code{type = "count"} then the misclassification counts will be computed.
-If \code{type = "loglike"} then the negative log likelihood error will be computed.
+If \code{type = "loglike"} then the negative log-likelihood error will be computed.
+}
+\examples{
+data(birds)
+
+# Simple standardization
+X <- scale(X)
+
+# Split and scale down
+X1 <- X[1:200, ]
+Y1 <- Y[1:200, 1:3]
+X2 <- X[201:322,]
+Y2 <- Y[201:322, 1:3]
+
+# Fit models using X1
+lambda <- logitsgl.lambda(X1, Y1, alpha = 0.5, lambda.min = 0.2)
+fit <- logitsgl(X1, Y1, alpha = 0.5, lambda = lambda)
+
+## Training errors:
+Err(fit, X1)
+
+## Errors predicting Y2:
+Err(fit, X2, Y2)
+
+# Do cross validation
+fit.cv <- logitsgl.cv(X1, Y1, alpha = 0.5, fold = 5, lambda = lambda)
+
+# Cross validation errors -- error rate
+Err(fit.cv)
+
+# Cross validation errors -- error count
+Err(fit.cv, loss = "count")
+
+# Cross validation errors -- negative log-likelihood
+Err(fit.cv, loss = "loglike")
+
 }
 \author{
 Martin Vincent

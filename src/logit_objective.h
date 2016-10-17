@@ -26,64 +26,112 @@ template < typename type_X, typename type_Y >
 class LogitLoss {
 
 public:
+
 	const sgl::natural n_variables;
 
 	typedef sgl::hessian_diagonal<false> hessian_type;
 
-	typedef sgl::DataPackage_2< sgl::MatrixData<type_X>,
-				sgl::MultiResponse<type_Y, 'Y'> > data_type;
+	typedef sgl::DataPackage_2<
+		sgl::MatrixData<type_X>,
+		sgl::MultiResponse<type_Y, 'Y'> > data_type;
 
 
 private:
 
 	type_Y const& Y; //response - 0 1 matrix of size n_samples x n_responses
+
+	// state variables
 	sgl::matrix prob; //probabilities
+	mutable sgl::matrix H; //hessians
+	mutable double value;
+
+	// states
+	mutable bool hessians_computed;
+	mutable bool value_computed;
 
 public:
 
 	LogitLoss() :
 				n_variables(0),
 				Y(sgl::null_matrix),
-				prob(sgl::null_matrix) {}
+				prob(sgl::null_matrix),
+				H(sgl::null_matrix),
+				value(0),
+				hessians_computed(false),
+				value_computed(false) {}
 
 	LogitLoss(data_type const& data) :
 				n_variables(data.get_B().n_responses),
 				Y(data.get_B().response),
-				prob(data.get_A().n_samples, n_variables) {
-	}
+				prob(data.get_A().n_samples, n_variables),
+				H(n_variables, data.get_A().n_samples),
+				value(0),
+				hessians_computed(false),
+				value_computed(false) {}
 
-	void set_lp(sgl::matrix const& lp)
-	{
-		prob = exp(lp);
+	void set_lp(sgl::matrix const& lp) {
+
+		TIMER_START
+
+		prob = trunc_exp(lp);
 		prob = prob/(1+prob);
 
 		ASSERT_IS_FINITE(prob);
+
+		hessians_computed = false;
+		value_computed = false;
 	}
 
-	void set_lp_zero()
-	{
+	void set_lp_zero() {
+
 		prob.ones();
 		prob = prob/(1+prob);
+
+		hessians_computed = false;
+		value_computed = false;
 	}
 
-	const sgl::matrix gradients() const
-	{
+	const sgl::matrix gradients() const	{
+
+		TIMER_START
+
 		return -trans(Y - prob);
 	}
 
-	void compute_hessians() const
-	{
+	void compute_hessians() const	{
+
+		TIMER_START
+
+		if(hessians_computed) {
+			return;
+		}
+
+		// Compute hessian
+		H = trans(prob - square(prob));
+
+		hessians_computed = true;
 		return;
 	}
 
-    const sgl::vector hessians(sgl::natural i) const
-	{
-		return -trans(square(prob.row(i))-prob.row(i));
+  const sgl::vector hessians(sgl::natural i) const {
+
+		TIMER_START
+
+		return H.col(i);
 	}
 
-	const sgl::numeric sum_values() const
-	{
-		return -accu(Y%log(prob)-Y%log(1-prob)+log(1-prob));
+	const sgl::numeric sum_values() const	{
+
+		TIMER_START
+
+		if( ! value_computed) {
+
+			value = -accu(Y%log(prob)-Y%log(1-prob)+log(1-prob));
+
+			value_computed = true;
+		}
+
+			return value;
 	}
 
 };
