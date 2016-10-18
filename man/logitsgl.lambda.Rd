@@ -2,7 +2,7 @@
 % Please edit documentation in R/lambda.R
 \name{logitsgl.lambda}
 \alias{logitsgl.lambda}
-\title{Compute a lambda sequence for the regularization path}
+\title{Compute Lambda Sequence}
 \usage{
 logitsgl.lambda(x, y, intercept = TRUE, grouping = factor(1:ncol(x)),
   groupWeights = NULL, parameterWeights = NULL, alpha = 1, d = 100L,

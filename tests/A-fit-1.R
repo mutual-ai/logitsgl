@@ -69,6 +69,12 @@ lambda<-logitsgl.lambda(X, y, alpha=0.5, lambda.min=0.8, intercept=FALSE)
 fit <-logitsgl(X, y, alpha=1, lambda = lambda, intercept=FALSE)
 res <- predict(fit, X)
 
+# Test single fit i.e. K = 1 with intercept
+y <- Y[,1]
+
+lambda<-Xsgl.lambda(X, y, alpha=0.5, lambda.min=0.8, intercept=TRUE)
+fit <-Xsgl(X, y, alpha=1, lambda = lambda, intercept=TRUE)
+res <- predict(fit, X)
 
 ### Navigation tests
 print(res)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit.R
 \name{logitsgl}
 \alias{logitsgl}
-\title{Fit a linear multiple output model using sparse group lasso}
+\title{Multi-label Sparse Group Lasso Logistic Regression}
 \usage{
 logitsgl(x, y, intercept = TRUE, grouping = factor(1:ncol(x)),
   groupWeights = NULL, parameterWeights = NULL, alpha = 1, lambda,
@@ -36,14 +36,7 @@ With each entry of list holding the fitted parameters, that is matrices of size 
 \item{lambda}{the lambda values used.}
 }
 \description{
-For a linear multiple output model with \eqn{p} features (covariates) dived into \eqn{m} groups using sparse group lasso.
-}
-\details{
-This function computes a sequence of minimizers (one for each lambda given in the \code{lambda} argument) of
-\deqn{\frac{1}{N}\|Y-X\beta\|_F^2 + \lambda \left( (1-\alpha) \sum_{J=1}^m \gamma_J \|\beta^{(J)}\|_2 + \alpha \sum_{i=1}^{n} \xi_i |\beta_i| \right)}
-where \eqn{\|\cdot\|_F} is the frobenius norm.
-The vector \eqn{\beta^{(J)}} denotes the parameters associated with the \eqn{J}'th group of features.
-The group weights are denoted by \eqn{\gamma \in [0,\infty)^m} and the parameter weights by \eqn{\xi \in [0,\infty)^n}.
+Fit a multi-label sparse group lasso logistic regression using sparse group lasso.
 }
 \examples{
 data(birds)

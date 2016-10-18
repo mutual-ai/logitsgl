@@ -1,6 +1,6 @@
 #
 #     Description of this R script:
-#     R interface for linear multiple output sparse group lasso routines.
+#     R interface for multi-label sparse group lasso logistic regression routines.
 #
 #     Intended for use with R.
 #     Copyright (C) 2014 Martin Vincent
@@ -19,17 +19,10 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
-#' @title Fit a linear multiple output model using sparse group lasso
+#' @title Multi-label Sparse Group Lasso Logistic Regression
 #'
 #' @description
-#' For a linear multiple output model with \eqn{p} features (covariates) dived into \eqn{m} groups using sparse group lasso.
-#'
-#' @details
-#' This function computes a sequence of minimizers (one for each lambda given in the \code{lambda} argument) of
-#' \deqn{\frac{1}{N}\|Y-X\beta\|_F^2 + \lambda \left( (1-\alpha) \sum_{J=1}^m \gamma_J \|\beta^{(J)}\|_2 + \alpha \sum_{i=1}^{n} \xi_i |\beta_i| \right)}
-#' where \eqn{\|\cdot\|_F} is the frobenius norm.
-#' The vector \eqn{\beta^{(J)}} denotes the parameters associated with the \eqn{J}'th group of features.
-#' The group weights are denoted by \eqn{\gamma \in [0,\infty)^m} and the parameter weights by \eqn{\xi \in [0,\infty)^n}.
+#' Fit a multi-label sparse group lasso logistic regression using sparse group lasso.
 #'
 #' @param x design matrix, matrix of size \eqn{N \times p}.
 #' @param y response matrix, matrix of size \eqn{N \times K}.

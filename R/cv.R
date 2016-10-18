@@ -1,6 +1,6 @@
 #
 #     Description of this R script:
-#     R interface for linear multiple output sparse group lasso routines.
+#     R interface for multi-label sparse group lasso logistic regression routines.
 #
 #     Intended for use with R.
 #     Copyright (C) 2014 Martin Vincent

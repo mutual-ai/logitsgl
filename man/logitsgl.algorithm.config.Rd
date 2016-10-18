@@ -68,7 +68,10 @@ lambda <- logitsgl.lambda(X, Y,
 	lambda.min = 0.5,
 	algorithm.config = config)
 
-fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+fit <- logitsgl(X, Y,
+	alpha = 0.5,
+	lambda = lambda,
+	algorithm.config = config)
 
 }
 \author{

@@ -1,6 +1,6 @@
 #
 #     Description of this R script:
-#     R routine for creating a lsgl algorithm configuration
+#     R interface for multi-label sparse group lasso logistic regression routines.
 #
 #     Intended for use with R.
 #     Copyright (C) 2014 Martin Vincent
@@ -54,7 +54,10 @@
 #'		lambda.min = 0.5,
 #'		algorithm.config = config)
 #'
-#' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
+#' fit <- logitsgl(X, Y,
+#'		alpha = 0.5,
+#'		lambda = lambda,
+#'		algorithm.config = config)
 #'
 #' @export
 logitsgl.algorithm.config <- function(
