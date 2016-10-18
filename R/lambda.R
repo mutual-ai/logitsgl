@@ -26,47 +26,34 @@
 #' logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
 #' @useDynLib logitsgl, .registration=TRUE
 #' @export
-logitsgl.lambda <- function(x, y, intercept = TRUE,
+logitsgl.lambda <- function(x, y,
+		intercept = TRUE,
 		grouping = factor(1:ncol(x)),
-		groupWeights = c(sqrt(ncol(y)*table(grouping))),
-		parameterWeights =  matrix(1, nrow = ncol(y), ncol = ncol(x)),
+		groupWeights = NULL,
+		parameterWeights =  NULL,
 		alpha = 1,
 		d = 100L,
 		lambda.min,
 		algorithm.config = logitsgl.standard.config)
 {
 
-	if( nrow(x) != if(is.vector(y)) length(y) else nrow(y) ) {
-		stop("x and y must have the same number of rows")
-	}
+	setup <- .process_args(x, y,
+		intercept = intercept,
+		grouping = grouping,
+		groupWeights = groupWeights,
+		parameterWeights = parameterWeights)
 
-	# cast
-	grouping <- factor(grouping)
+	data <- setup$data
 
-	# add intercept
-	if(intercept) {
-		x <- cBind(Intercept = rep(1, nrow(x)), x)
-		groupWeights <- c(0, groupWeights)
-		parameterWeights <- cbind(rep(0, if(is.vector(y)) 1 else ncol(y)), parameterWeights)
-		grouping <- factor(c("Intercept", as.character(grouping)), levels = c("Intercept", levels(grouping)))
-	}
-
-	# create data
-	data <- create.sgldata(x, y)
-
-  # TODO ensure ColSums(Y != 0) != 0
-
-
-	# call SglOptimizer function
-	callsym <- paste("logitsgl_", if(data$sparseX) "xs_" else "xd_", if(data$sparseY) "ys" else "yd", sep = "")
+	#TODO print some info
 
 	lambda <- sgl_lambda_sequence(
-		module_name = callsym,
+		module_name = setup$callsym,
 		PACKAGE = "logitsgl",
 		data = data,
-		parameterGrouping = grouping,
-		groupWeights = groupWeights,
-		parameterWeights = parameterWeights,
+		parameterGrouping = setup$grouping,
+		groupWeights = setup$groupWeights,
+		parameterWeights = setup$parameterWeights,
 		alpha = alpha,
  		d = d,
 		lambda.min = lambda.min,

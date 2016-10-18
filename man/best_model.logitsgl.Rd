@@ -18,7 +18,18 @@ index of the best model.
 Returns the index of the best model, in terms of lowest error rate
 }
 \examples{
-#FIXME
+data(birds)
+
+# Simple standardization
+X <- scale(X)
+
+lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 5, lambda = lambda)
+
+# print some info
+fit.cv
+
+best_model(fit.cv)
 }
 \author{
 Martin Vincent

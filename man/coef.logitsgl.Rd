@@ -28,7 +28,9 @@ X <- scale(X)
 
 lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
 fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#FIXME
+
+# nonzero coefficients in model 50
+coef(fit, 50)
 }
 \author{
 Martin Vincent

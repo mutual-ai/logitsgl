@@ -5,9 +5,8 @@
 \title{Compute a lambda sequence for the regularization path}
 \usage{
 logitsgl.lambda(x, y, intercept = TRUE, grouping = factor(1:ncol(x)),
-  groupWeights = c(sqrt(ncol(y) * table(grouping))),
-  parameterWeights = matrix(1, nrow = ncol(y), ncol = ncol(x)), alpha = 1,
-  d = 100L, lambda.min, algorithm.config = logitsgl.standard.config)
+  groupWeights = NULL, parameterWeights = NULL, alpha = 1, d = 100L,
+  lambda.min, algorithm.config = logitsgl.standard.config)
 }
 \arguments{
 \item{x}{design matrix, matrix of size \eqn{N \times p}.}

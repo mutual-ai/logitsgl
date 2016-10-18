@@ -19,7 +19,7 @@ fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, lambda = lambda)
 # TODO test error
 
 ## Test single fit i.e. K = 1
-y <- Y1[,1]
+y <- Y[,1]
 
 lambda <- logitsgl.lambda(X, y, alpha = 0.5, d = 25, lambda.min = 0.5)
 fit.cv <- logitsgl.cv(X, y, alpha = 0.5, lambda = lambda)

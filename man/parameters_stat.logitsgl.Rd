@@ -25,7 +25,14 @@ X <- scale(X)
 
 lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
 fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#FIXME
+
+# Number of parameters in models
+parameters_stat(fit)
+
+fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 5, lambda = lambda)
+
+# Number of parameters
+parameters_stat(fit.cv)
 }
 \author{
 Martin Vincent

@@ -71,33 +71,22 @@
 logitsgl <- function(x, y,
 		intercept = TRUE,
 		grouping = factor(1:ncol(x)),
-		groupWeights = c(sqrt(ncol(y)*table(grouping))),
-		parameterWeights =  matrix(1, nrow = ncol(y), ncol = ncol(x)),
+		groupWeights = NULL,
+		parameterWeights =  NULL,
 		alpha = 1,
 		lambda,
-		algorithm.config = logitsgl.standard.config)
-{
+		algorithm.config = logitsgl.standard.config) {
+
 	# Get call
 	cl <- match.call()
 
-	if(nrow(x) != if(is.vector(y)) length(y) else nrow(y)) {
-		stop("x and y must have the same number of rows")
-	}
+	setup <- .process_args(x, y,
+		intercept = intercept,
+		grouping = grouping,
+		groupWeights = groupWeights,
+		parameterWeights = parameterWeights)
 
-	# cast
-	grouping <- factor(grouping)
-
-	if(intercept) {
-		# add intercept
-		x <- cBind(Intercept = rep(1, nrow(x)), x)
-		groupWeights <- c(0, groupWeights)
-		parameterWeights <- cbind(rep(0, if(is.vector(y)) 1 else ncol(y)), parameterWeights)
-		grouping <- factor(c("Intercept", as.character(grouping)), levels = c("Intercept", levels(grouping)))
-	}
-
-	# create data
-	group.names <- if(is.vector(y)) "response" else if(is.null(colnames(y))) 1:ncol(y) else colnames(y)
-	data <- create.sgldata(x, y, group.names = group.names)
+	data <- setup$data
 
 	# Print some info
 	cat("\nRunning logitsgl ")
@@ -114,25 +103,23 @@ logitsgl <- function(x, y,
 		cat("\n\n")
 	}
 
-	print(data.frame('Samples: ' = print_with_metric_prefix(nrow(x)),
+	print(data.frame('Samples: ' = print_with_metric_prefix(data$n.samples),
 					'Features: ' = print_with_metric_prefix(data$n.covariate),
-					'Models: ' = print_with_metric_prefix(ncol(y)),
-					'Groups: ' = print_with_metric_prefix(length(unique(grouping))),
-					'Parameters: ' = print_with_metric_prefix(length(parameterWeights)),
+					'Models: ' = print_with_metric_prefix(data$n.models),
+					'Groups: ' = print_with_metric_prefix(length(unique(setup$grouping))),
+					'Parameters: ' = print_with_metric_prefix(length(setup$parameterWeights)),
 					check.names = FALSE),
 			row.names = FALSE, digits = 2, right = TRUE)
 	cat("\n")
 
-	# Call sglOptim function
-	callsym <- paste("logitsgl_", if(data$sparseX) "xs_" else "xd_", if(data$sparseY) "ys" else "yd", sep = "")
-
+	# Call sglOptim
 	res <- sgl_fit(
-		module_name = callsym,
+		module_name = setup$callsym,
 		PACKAGE = "logitsgl",
 		data = data,
-		parameterGrouping = grouping,
-		groupWeights = groupWeights,
-		parameterWeights = parameterWeights,
+		parameterGrouping = setup$grouping,
+		groupWeights = setup$groupWeights,
+		parameterWeights = setup$parameterWeights,
 		alpha = alpha,
 		lambda = lambda,
 		algorithm.config = algorithm.config)

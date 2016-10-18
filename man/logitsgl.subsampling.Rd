@@ -5,9 +5,8 @@
 \title{Subsampling}
 \usage{
 logitsgl.subsampling(x, y, intercept = TRUE, grouping = factor(1:ncol(x)),
-  groupWeights = c(sqrt(ncol(y) * table(grouping))),
-  parameterWeights = matrix(1, nrow = ncol(y), ncol = ncol(x)), alpha = 1,
-  lambda, train, test, collapse = FALSE, use_parallel = FALSE,
+  groupWeights = NULL, parameterWeights = NULL, alpha = 1, lambda, train,
+  test, collapse = FALSE, use_parallel = FALSE,
   algorithm.config = logitsgl.standard.config)
 }
 \arguments{

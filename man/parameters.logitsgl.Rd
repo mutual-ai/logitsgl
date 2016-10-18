@@ -23,9 +23,11 @@ data(birds)
 # Simple standardization
 X <- scale(X)
 
-lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.6)
 fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#FIXME
+
+# Nonzero parameters for model 100
+parameters(fit)[[100]]
 }
 \author{
 Martin Vincent

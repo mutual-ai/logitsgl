@@ -68,8 +68,8 @@
 logitsgl.cv <- function(x, y,
 		intercept = TRUE,
 		grouping = factor(1:ncol(x)),
-		groupWeights = c(sqrt(ncol(y)*table(grouping))),
-		parameterWeights =  matrix(1, nrow = ncol(y), ncol = ncol(x)),
+		groupWeights = NULL,
+		parameterWeights =  NULL,
 		alpha = 1,
 		lambda,
 		fold = 10L,
@@ -77,36 +77,27 @@ logitsgl.cv <- function(x, y,
 		use_parallel = FALSE,
 		algorithm.config = logitsgl.standard.config)
 {
+
 	# Get call
 	cl <- match.call()
 
-	# cast
-	grouping <- factor(grouping)
+	setup <- .process_args(x, y,
+		intercept = intercept,
+		grouping = grouping,
+		groupWeights = groupWeights,
+		parameterWeights = parameterWeights)
 
-	# add intercept
-	if(intercept) {
-		x <- cBind(Intercept = rep(1, nrow(x)), x)
-		groupWeights <- c(0, groupWeights)
-		parameterWeights <- cbind(rep(0, ncol(y)), parameterWeights)
-		grouping <- factor(c("Intercept", as.character(grouping)), levels = c("Intercept", levels(grouping)))
-	}
+	data <- setup$data
 
-	# create data
-	group.names <- if(is.null(colnames(y))) 1:ncol(y) else colnames(y)
-	data <- create.sgldata(x, y, group.names = group.names)
-
-	# TODO ensure ColSums(Y != 0) != 0
-
-	# get module name
-	callsym <- paste("logitsgl_", if(data$sparseX) "xs_" else "xd_", if(data$sparseY) "ys" else "yd", sep = "")
+	#TODO print some info
 
 	res <- sgl_cv(
-		module_name = callsym,
+		module_name = setup$callsym,
 		PACKAGE = "logitsgl",
 		data = data,
-		parameterGrouping = grouping,
-		groupWeights = groupWeights,
-		parameterWeights = parameterWeights,
+		parameterGrouping = setup$grouping,
+		groupWeights = setup$groupWeights,
+		parameterWeights = setup$parameterWeights,
 		alpha =  alpha,
 		lambda = lambda,
 		fold = fold,

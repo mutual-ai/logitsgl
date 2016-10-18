@@ -157,9 +157,11 @@ features.logitsgl <- function(object, ...) {
 #' # Simple standardization
 #' X <- scale(X)
 #'
-#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.6)
 #' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#' #FIXME
+#'
+#' # Nonzero parameters for model 100
+#' parameters(fit)[[100]]
 #' @method parameters logitsgl
 #' @import sglOptim
 #' @export
@@ -184,9 +186,16 @@ parameters.logitsgl <- function(object, ...) {
 #' # Simple standardization
 #' X <- scale(X)
 #'
-#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.8)
 #' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#' ##FIXME
+#'
+#' # Number of features in models
+#' features_stat(fit)
+#'
+#' fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 5, lambda = lambda)
+#'
+#' # Number of features
+#' features_stat(fit.cv)
 #' @export
 features_stat.logitsgl <- function(object, ...) {
 	class(object) <- "sgl" # Use std function
@@ -212,7 +221,14 @@ features_stat.logitsgl <- function(object, ...) {
 #'
 #' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
 #' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#' #FIXME
+#'
+#' # Number of parameters in models
+#' parameters_stat(fit)
+#'
+#' fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 5, lambda = lambda)
+#'
+#' # Number of parameters
+#' parameters_stat(fit.cv)
 #' @export
 parameters_stat.logitsgl <- function(object, ...) {
 	class(object) <- "sgl" # Use std function
@@ -240,7 +256,8 @@ parameters_stat.logitsgl <- function(object, ...) {
 #'
 #' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
 #' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#' #FIXME
+#'
+#' nmod(fit)
 #' @import sglOptim
 #' @export
 nmod.logitsgl <- function(object, ...) {
@@ -258,7 +275,18 @@ nmod.logitsgl <- function(object, ...) {
 #'
 #' @author Martin Vincent
 #' @examples
-#' #FIXME
+#' data(birds)
+#'
+#' # Simple standardization
+#' X <- scale(X)
+#'
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 5, lambda = lambda)
+#'
+#' # print some info
+#' fit.cv
+#'
+#' best_model(fit.cv)
 #' @export
 best_model.logitsgl <- function(object, ...) {
 	class(object) <- "sgl" # Use std function
@@ -284,7 +312,9 @@ best_model.logitsgl <- function(object, ...) {
 #'
 #' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
 #' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#' #FIXME
+#'
+#' # Exstract model 50
+#' models(fit)[[50]]
 #' @method models logitsgl
 #' @import sglOptim
 #' @export
@@ -312,7 +342,9 @@ models.logitsgl <- function(object, index = 1:nmod(object), ...) {
 #'
 #' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
 #' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
-#' #FIXME
+#'
+#' # nonzero coefficients in model 50
+#' coef(fit, 50)
 #' @import sglOptim
 #' @export
 coef.logitsgl <- function(object, index = 1:nmod(object), ...) {

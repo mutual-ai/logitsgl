@@ -5,9 +5,8 @@
 \title{Cross Validation}
 \usage{
 logitsgl.cv(x, y, intercept = TRUE, grouping = factor(1:ncol(x)),
-  groupWeights = c(sqrt(ncol(y) * table(grouping))),
-  parameterWeights = matrix(1, nrow = ncol(y), ncol = ncol(x)), alpha = 1,
-  lambda, fold = 10L, cv.indices = list(), use_parallel = FALSE,
+  groupWeights = NULL, parameterWeights = NULL, alpha = 1, lambda,
+  fold = 10L, cv.indices = list(), use_parallel = FALSE,
   algorithm.config = logitsgl.standard.config)
 }
 \arguments{
