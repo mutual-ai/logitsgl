@@ -19,59 +19,39 @@
 #ifndef LOGIT_RESPONSE_H_
 #define LOGIT_RESPONSE_H_
 
-class PredictedClass {};
-class LP {};
-class Probabilities {};
+using namespace sgl;
 
-class LogitResponse {
+class LogitResponse : public elements < LogitResponse > {
+
+private:
+	vector const linear_predictors;
 
 public:
 
-	sgl::vector const linear_predictors;
-
-	LogitResponse(sgl::vector const& linear_predictors) :
+	LogitResponse(vector const& linear_predictors) :
 		linear_predictors(linear_predictors) {}
 
 	//Needed so that we can use fields
 	LogitResponse() :
-//		prob(),
-//		predicted_class(),
-		linear_predictors()  {
-	}
+		linear_predictors(null_vector) {}
 
 	LogitResponse const& operator=(LogitResponse const& s)
 	{
-	//	const_cast<sgl::vector&>(this->predicted_class) = s.predicted_class;
-		const_cast<sgl::vector&>(this->linear_predictors) = s.linear_predictors;
-	//	const_cast<sgl::vector&>(this->prob) = s.prob;
+		const_cast < sgl::vector & > ( this->linear_predictors ) = s.linear_predictors;
 
-		return *this;
+		return * this;
 	}
 
-    sgl::vector get(PredictedClass) const {
-       return arma::conv_to<sgl::vector>::from(exp(linear_predictors)/(1+exp(linear_predictors)) > 0.5);
-    	// return predicted_class;
-    }
+		rList as_rList() const {
 
-    sgl::vector get(LP) const {
-        return linear_predictors;
-    }
+			vector prob = exp(linear_predictors)/(1+exp(linear_predictors));
 
-    sgl::vector get(Probabilities) const {
-        return exp(linear_predictors)/(1+exp(linear_predictors));
-    }
+	    rList list;
+	    list.attach( linear_predictors, "link");
+			list.attach( prob, "prob");
 
-    template<typename T>
-    static rList simplify(T const& responses) {
-
-        rList list;
-
-        list.attach(sgl::simplifier<sgl::vector, LP>::simplify(responses), "link");
-        list.attach(sgl::simplifier<sgl::vector, Probabilities>::simplify(responses), "prob");
-        list.attach(sgl::simplifier<sgl::vector, PredictedClass>::simplify(responses), "classes");
-
-        return list;
-    }
+	    return list;
+	  }
 
 };
 

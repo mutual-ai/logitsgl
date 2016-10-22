@@ -5,7 +5,7 @@
 \title{Compute error rates}
 \usage{
 \method{Err}{logitsgl}(object, data = NULL, response = object$Y.true,
-  y = response, loss = "rate", ...)
+  y = response, loss = "loglike", ...)
 }
 \arguments{
 \item{object}{a logitsgl object}
@@ -18,7 +18,7 @@
 
 \item{loss}{type of error loss}
 
-\item{...}{ignored}
+\item{...}{additional parameters passed to the loss function}
 }
 \value{
 a vector of error rates
@@ -56,12 +56,6 @@ fit.cv <- logitsgl.cv(X1, Y1, alpha = 0.5, fold = 5, lambda = lambda)
 
 # Cross validation errors -- error rate
 Err(fit.cv)
-
-# Cross validation errors -- error count
-Err(fit.cv, loss = "count")
-
-# Cross validation errors -- negative log-likelihood
-Err(fit.cv, loss = "loglike")
 
 }
 \author{

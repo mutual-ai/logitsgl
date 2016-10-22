@@ -70,29 +70,22 @@ predict.logitsgl <- function(object, x, sparse.data = is(x, "sparseMatrix"), ...
 	if(dim(object$beta[[2]])[2] != ncol(x)) stop("x has wrong dimension")
 
 	data <- list()
-	data$sparseX <- FALSE
+	data$sparseX <- sparse.data
+	data$X <- x
 	data$sample.names <- rownames(x)
 	data$n.samples <- nrow(x)
+	data$sparseY <- FALSE # irrelevant, but need by .get_callsym 
 
-	if(sparse.data) {
-
-		x <- as(x, "CsparseMatrix")
-		data$X <- list(dim(x), x@p, x@i, x@x)
-
-		res <- sgl_predict("logitsgl_xs_yd", "logitsgl", object, data)
-
-	} else {
-
-		data$X <- as.matrix(x)
-
-		res <- sgl_predict("logitsgl_xd_yd", "logitsgl", object, data)
-
-	}
+	res <- sgl_predict(
+		module_name = .get_callsym(data),
+		PACKAGE = "logitsgl",
+		object = object,
+		data = data,
+		responses = c("link", "prob"))
 
 	#Responses
 	res$P <- lapply(res$responses$prob, t)
 	res$link <- lapply(res$responses$link, t)
-	res$Yhat <- lapply(res$responses$classes, t)
 	res$responses <- NULL
 
 	#TODO response dimnames

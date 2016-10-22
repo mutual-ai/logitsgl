@@ -98,6 +98,7 @@ logitsgl.subsampling <- function(x, y,
 		lambda = lambda,
 		training = train,
 		test = test,
+		responses = c("link", "prob"),
 		collapse = collapse,
 		use_parallel = use_parallel,
 		)
@@ -110,13 +111,11 @@ logitsgl.subsampling <- function(x, y,
 
 		res$P <- lapply(res$responses$prob, t)
 		res$link <- lapply(res$responses$link, t)
-		res$Yhat <- lapply(res$responses$classes, t)
 
 	} else {
 
 		res$P <- lapply(res$responses$prob, function(x) lapply(x, t))
 		res$link <- lapply(res$responses$link, function(x) lapply(x, t))
-		res$Yhat <- lapply(res$responses$classes, function(x) lapply(x, t))
 
 	}
 

@@ -102,6 +102,7 @@ logitsgl.cv <- function(x, y,
 		lambda = lambda,
 		fold = fold,
 		cv.indices = cv.indices,
+		responses = c("link", "prob"),
 		use_parallel = use_parallel,
 		algorithm.config = algorithm.config
 		)
@@ -112,7 +113,6 @@ logitsgl.cv <- function(x, y,
 	# Responses
 	res$P <- lapply(res$responses$prob, t)
 	res$link <- lapply(res$responses$link, t)
-	res$Yhat <- lapply(res$responses$classes, t)
 	res$responses <- NULL
 
 	#TODO response dimnames

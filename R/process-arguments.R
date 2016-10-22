@@ -42,7 +42,7 @@ group.names <- if(is.vector(y)) "response" else if(is.null(colnames(y))) 1:ncol(
 data <- create.sgldata(x, y, group.names = group.names)
 
 # Call sglOptim function
-callsym <- paste("logitsgl_", if(data$sparseX) "xs_" else "xd_", if(data$sparseY) "ys" else "yd", sep = "")
+callsym <- .get_callsym(data)
 
 setup <- list()
 setup$data <- data
@@ -53,4 +53,9 @@ setup$parameterWeights <- parameterWeights
 
 return(setup)
 
+}
+
+# Match with MODULE_NAME in logitsgl.cpp
+.get_callsym <- function(data) {
+  paste("logitsgl_", if(data$sparseX) "xs_" else "xd_", if(data$sparseY) "ys" else "yd", sep = "")
 }

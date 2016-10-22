@@ -19,6 +19,8 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
+#TODO add auc error measure
+
 #' @title Compute error rates
 #'
 #' @description
@@ -32,7 +34,7 @@
 #' @param response redirected to \code{y}
 #' @param y a matrix of the true responses (the \eqn{Y} matrix)
 #' @param loss type of error loss
-#' @param ... ignored
+#' @param ... additional parameters passed to the loss function
 #' @return a vector of error rates
 #'
 #' @author Martin Vincent
@@ -64,12 +66,6 @@
 #' # Cross validation errors -- error rate
 #' Err(fit.cv)
 #'
-#' # Cross validation errors -- error count
-#' Err(fit.cv, loss = "count")
-#'
-#' # Cross validation errors -- negative log-likelihood
-#' Err(fit.cv, loss = "loglike")
-#'
 #' @method Err logitsgl
 #' @import sglOptim
 #' @export
@@ -77,23 +73,7 @@ Err.logitsgl <- function(object,
 	data = NULL,
 	response = object$Y.true,
 	y = response,
-	loss = "rate", ... ) {
-
-	if(loss == "rate") {
-		return( compute_error(object,
-			data = data,
-			response.name = "Yhat",
-			response = y,
-			loss = function(x,y) mean(x != y)))
-	}
-
-	if(loss == "count") {
-		return( compute_error(object,
-			data = data,
-			response.name = "Yhat",
-			response = y,
-			loss = function(x,y) sum(x != y)))
-	}
+	loss = "loglike", ... ) {
 
 	if(loss == "loglike") {
 
