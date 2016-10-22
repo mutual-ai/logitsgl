@@ -29,7 +29,7 @@ fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
 # Number of parameters in models
 parameters_stat(fit)
 
-fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 5, lambda = lambda)
+fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 2, lambda = lambda)
 
 # Number of parameters
 parameters_stat(fit.cv)
