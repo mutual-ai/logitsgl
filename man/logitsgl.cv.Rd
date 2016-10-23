@@ -52,14 +52,14 @@ data(birds)
 # Simple standardization
 X <- scale(X)
 
-lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.9)
 
 # registre parallel backend
 cl <- makeCluster(2)
 registerDoParallel(cl)
 
 # Do cross validation using 2 threads
-fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 2, lambda = lambda, use_parallel = TRUE)
+fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 10, lambda = lambda, use_parallel = TRUE)
 
 stopCluster(cl)
 

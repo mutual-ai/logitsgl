@@ -166,13 +166,13 @@ parameters.logitsgl <- function(object, ...) {
 #' # Simple standardization
 #' X <- scale(X)
 #'
-#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.8)
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.9)
 #' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
 #'
 #' # Number of features in models
 #' features_stat(fit)
 #'
-#' fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 2, lambda = lambda)
+#' fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 10, lambda = lambda)
 #'
 #' # Number of features
 #' features_stat(fit.cv)
@@ -199,13 +199,13 @@ features_stat.logitsgl <- function(object, ...) {
 #' # Simple standardization
 #' X <- scale(X)
 #'
-#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.5)
+#' lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.9)
 #' fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
 #'
 #' # Number of parameters in models
 #' parameters_stat(fit)
 #'
-#' fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 2, lambda = lambda)
+#' fit.cv <- logitsgl.cv(X, Y, alpha = 0.5, fold = 10, lambda = lambda)
 #'
 #' # Number of parameters
 #' parameters_stat(fit.cv)

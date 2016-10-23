@@ -74,7 +74,7 @@ predict.logitsgl <- function(object, x, sparse.data = is(x, "sparseMatrix"), ...
 	data$X <- x
 	data$sample.names <- rownames(x)
 	data$n.samples <- nrow(x)
-	data$sparseY <- FALSE # irrelevant, but need by .get_callsym 
+	data$sparseY <- FALSE # irrelevant, but need by .get_callsym
 
 	res <- sgl_predict(
 		module_name = .get_callsym(data),
@@ -84,8 +84,8 @@ predict.logitsgl <- function(object, x, sparse.data = is(x, "sparseMatrix"), ...
 		responses = c("link", "prob"))
 
 	#Responses
-	res$P <- lapply(res$responses$prob, t)
-	res$link <- lapply(res$responses$link, t)
+	res$P <- transpose_list_elements(res$responses$prob)
+	res$link <- transpose_list_elements(res$responses$link)
 	res$responses <- NULL
 
 	#TODO response dimnames

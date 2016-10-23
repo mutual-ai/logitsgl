@@ -106,19 +106,8 @@ logitsgl.subsampling <- function(x, y,
 	# Add true response
 	res$Y.true <- lapply(test, function(i) y[i, , drop = FALSE])
 
-	# Format response
-	if(collapse) {
-
-		res$P <- lapply(res$responses$prob, t)
-		res$link <- lapply(res$responses$link, t)
-
-	} else {
-
-		res$P <- lapply(res$responses$prob, function(x) lapply(x, t))
-		res$link <- lapply(res$responses$link, function(x) lapply(x, t))
-
-	}
-
+	res$P <- transpose_list_elements(res$responses$prob)
+	res$link <- transpose_list_elements(res$responses$link)
 	res$responses <- NULL
 
 	res$logitsgl_version <- packageVersion("logitsgl")

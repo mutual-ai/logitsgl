@@ -21,6 +21,13 @@ fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
 
 lambda <- logitsgl.lambda(X, Y, alpha = 1, lambda.min = 0.8)
 fit <- logitsgl(X, Y, alpha = 1, lambda = lambda)
+res <- predict(fit, X)
+
+# Test dim
+if(length(res$P) != 100) stop()
+if(any(dim(res$P[[1]]) != c(200, 3))) stop()
+if(length(res$link) != 100) stop()
+if(any(dim(res$link[[1]]) != c(200, 3))) stop()
 
 # Test dens - sparse
 Y <- Matrix(Y, sparse = TRUE)
@@ -33,6 +40,7 @@ fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
 
 lambda <- logitsgl.lambda(X, Y, alpha = 1, lambda.min = 0.8)
 fit <- logitsgl(X, Y, alpha = 1, lambda = lambda)
+res <- predict(fit, X)
 
 # Test sparse - sparse
 X <- Matrix(X, sparse = TRUE)
@@ -45,6 +53,7 @@ fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
 
 lambda <- logitsgl.lambda(X, Y, alpha = 1, lambda.min = 0.8)
 fit <- logitsgl(X, Y, alpha = 1, lambda = lambda)
+res <- predict(fit, X)
 
 # Test sparse - dense
 Y <- as.matrix(Y)
@@ -57,6 +66,7 @@ fit <- logitsgl(X, Y, alpha = 0.5, lambda = lambda)
 
 lambda <- logitsgl.lambda(X, Y, alpha = 1, lambda.min = 0.8)
 fit <- logitsgl(X, Y, alpha = 1, lambda = lambda)
+res <- predict(fit, X)
 
 # Test intercept = FALSE
 lambda <- logitsgl.lambda(X, Y, alpha = 0.5, lambda.min = 0.8, intercept=FALSE)
@@ -76,6 +86,10 @@ lambda <- logitsgl.lambda(X, y, alpha=0.5, lambda.min=0.8, intercept=TRUE)
 fit <- logitsgl(X, y, alpha=1, lambda = lambda, intercept=TRUE)
 
 res <- predict(fit, X)
+
+# Test dimension
+if(any(dim(res$P[[1]]) != c(200, 100))) stop()
+if(any(dim(res$link[[1]]) != c(200, 100))) stop()
 
 ### Navigation tests
 print(res)
