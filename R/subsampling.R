@@ -101,7 +101,8 @@ logitsgl.subsampling <- function(x, y,
 		responses = c("link", "prob"),
 		collapse = collapse,
 		use_parallel = use_parallel,
-		)
+		algorithm.config = algorithm.config
+	)
 
 	# Add true response
 	res$Y.true <- lapply(test, function(i) y[i, , drop = FALSE])
