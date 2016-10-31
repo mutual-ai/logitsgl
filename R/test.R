@@ -36,8 +36,7 @@ test_objective_logitsgl <- function(x, y,
 	grouping <- factor(grouping)
 
 	# create data
-	group.names <- if(is.null(colnames(y))) 1:ncol(y) else colnames(y)
-	data <- create.sgldata(x, y, group.names = group.names)
+	data <- create.sgldata(x, y)
 
 	# get module name
 	callsym <- paste("logitsgl_", if(data$sparseX) "xs_" else "xd_", if(data$sparseY) "ys" else "yd", sep = "")

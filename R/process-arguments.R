@@ -59,8 +59,7 @@ if(intercept) {
 }
 
 # create data
-group.names <- if(ncol(y) == 1) "response" else if(is.null(colnames(y))) 1:ncol(y) else colnames(y)
-data <- create.sgldata(x, y, group.names = group.names)
+data <- create.sgldata(x, y)
 
 # Call sglOptim function
 callsym <- .get_callsym(data)

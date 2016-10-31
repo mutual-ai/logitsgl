@@ -31,8 +31,7 @@
 #'
 #' @param object a logitsgl object
 #' @param data a design matrix (the \eqn{X} matrix)
-#' @param response redirected to \code{y}
-#' @param y a matrix of the true responses (the \eqn{Y} matrix)
+#' @param response  a matrix of the true responses (the \eqn{Y} matrix)
 #' @param loss type of error loss
 #' @param ... additional parameters passed to the loss function
 #' @return a vector of error rates
@@ -72,18 +71,26 @@
 Err.logitsgl <- function(object,
 	data = NULL,
 	response = object$Y.true,
-	y = response,
 	loss = "loglike", ... ) {
+
+	true_response <- response
+
+	if( ! is.null(data) ) {
+		object <- predict(object, data)
+	}
 
 	if(loss == "loglike") {
 
-		loss <- function(x,y) -mean(y*log(x)+(1-y)*log(1-x))
+		loss <- function(x,y) -mean(sapply(1:length(x), function(i)
+			y[[i]]*log(x[[i]])+(1-y[[i]])*log(1-x[[i]])
+		))
 
-		return( compute_error(object,
-			data = data,
-			response.name = "P",
-			response = y,
-			loss = loss))
+		return( compute_error(
+			x = object,
+			response_name = "P",
+			true_response = true_response,
+			loss = loss)
+		)
 	}
 
 	stop("Unknown loss")

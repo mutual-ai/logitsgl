@@ -111,8 +111,8 @@ logitsgl.cv <- function(x, y,
 	res$Y.true <- y
 
 	# Responses
-	res$P <- transpose_list_elements(res$responses$prob)
-	res$link <- transpose_list_elements(res$responses$link)
+	res$P <- res$responses$prob
+	res$link <- res$responses$link
 	res$responses <- NULL
 
 	#TODO response dimnames

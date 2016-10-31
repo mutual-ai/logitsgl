@@ -107,8 +107,8 @@ logitsgl.subsampling <- function(x, y,
 	# Add true response
 	res$Y.true <- lapply(test, function(i) y[i, , drop = FALSE])
 
-	res$P <- transpose_list_elements(res$responses$prob)
-	res$link <- transpose_list_elements(res$responses$link)
+	res$P <- res$responses$prob
+	res$link <- res$responses$link
 	res$responses <- NULL
 
 	res$logitsgl_version <- packageVersion("logitsgl")

@@ -5,16 +5,14 @@
 \title{Compute error rates}
 \usage{
 \method{Err}{logitsgl}(object, data = NULL, response = object$Y.true,
-  y = response, loss = "loglike", ...)
+  loss = "loglike", ...)
 }
 \arguments{
 \item{object}{a logitsgl object}
 
 \item{data}{a design matrix (the \eqn{X} matrix)}
 
-\item{response}{redirected to \code{y}}
-
-\item{y}{a matrix of the true responses (the \eqn{Y} matrix)}
+\item{response}{a matrix of the true responses (the \eqn{Y} matrix)}
 
 \item{loss}{type of error loss}
 
