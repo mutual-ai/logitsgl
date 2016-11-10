@@ -33,8 +33,8 @@ public:
 
 	typedef sgl::DataPackage_2<
 		sgl::MatrixData<type_X>,
-		sgl::MultiResponse<type_Y, 'Y'> > data_type;
-
+		sgl::MultiResponse<type_Y, 'Y'> > data_type
+	;
 
 private:
 
@@ -52,22 +52,22 @@ private:
 public:
 
 	LogitLoss() :
-				n_variables(0),
-				Y(sgl::null_matrix),
-				prob(sgl::null_matrix),
-				H(sgl::null_matrix),
-				value(0),
-				hessians_computed(false),
-				value_computed(false) {}
+		n_variables(0),
+		Y(sgl::null_matrix),
+		prob(sgl::null_matrix),
+		H(sgl::null_matrix),
+		value(0),
+		hessians_computed(false),
+		value_computed(false) {}
 
 	LogitLoss(data_type const& data) :
-				n_variables(data.get_B().n_responses),
-				Y(data.get_B().response),
-				prob(data.get_A().n_samples, n_variables),
-				H(n_variables, data.get_A().n_samples),
-				value(0),
-				hessians_computed(false),
-				value_computed(false) {}
+		n_variables(data.get_B().n_responses),
+		Y(data.get_B().response),
+		prob(data.get_A().n_samples, n_variables),
+		H(n_variables, data.get_A().n_samples),
+		value(0),
+		hessians_computed(false),
+		value_computed(false) {}
 
 	void set_lp(sgl::matrix const& lp) {
 
@@ -136,19 +136,24 @@ public:
 
 };
 
-typedef sgl::ObjectiveFunctionType < sgl::GenralizedLinearLossDense < LogitLoss < sgl::matrix, sgl::matrix > > ,
-		LogitLoss < sgl::matrix, sgl::matrix >::data_type > logit;
+typedef sgl::ObjectiveFunctionType <
+	sgl::GenralizedLinearLossDense <
+		LogitLoss < sgl::matrix, sgl::matrix > > > logit
+;
 
 typedef sgl::ObjectiveFunctionType <
-		sgl::GenralizedLinearLossSparse < LogitLoss < sgl::sparse_matrix, sgl::matrix > > ,
-		LogitLoss < sgl::sparse_matrix, sgl::matrix >::data_type > logit_spx;
+	sgl::GenralizedLinearLossSparse <
+		LogitLoss < sgl::sparse_matrix, sgl::matrix > > > logit_spx
+;
 
 typedef sgl::ObjectiveFunctionType <
-		sgl::GenralizedLinearLossDense < LogitLoss < sgl::matrix, sgl::sparse_matrix > > ,
-		LogitLoss < sgl::matrix, sgl::sparse_matrix >::data_type > logit_spy;
+	sgl::GenralizedLinearLossDense <
+		LogitLoss < sgl::matrix, sgl::sparse_matrix > > > logit_spy
+;
 
 typedef sgl::ObjectiveFunctionType <
-		sgl::GenralizedLinearLossSparse < LogitLoss < sgl::sparse_matrix, sgl::sparse_matrix > > ,
-		LogitLoss < sgl::sparse_matrix, sgl::sparse_matrix >::data_type > logit_spx_spy;
+	sgl::GenralizedLinearLossSparse <
+		LogitLoss < sgl::sparse_matrix, sgl::sparse_matrix > > > logit_spx_spy
+;
 
 #endif /* LOGIT_OBJECTIVE_H_ */

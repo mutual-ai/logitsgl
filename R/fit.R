@@ -96,13 +96,14 @@ logitsgl <- function(x, y,
 		cat("\n\n")
 	}
 
-	print(data.frame('Samples: ' = print_with_metric_prefix(data$n.samples),
-					'Features: ' = print_with_metric_prefix(data$n.covariate),
-					'Models: ' = print_with_metric_prefix(ncol(data$data$Y)),
-					'Groups: ' = print_with_metric_prefix(length(unique(setup$grouping))),
-					'Parameters: ' = print_with_metric_prefix(length(setup$parameterWeights)),
-					check.names = FALSE),
-			row.names = FALSE, digits = 2, right = TRUE)
+	print(data.frame(
+		'Samples: ' = print_with_metric_prefix(data$n_samples),
+		'Features: ' = print_with_metric_prefix(data$n_covariate),
+		'Models: ' = print_with_metric_prefix(data$response_dimension),
+		'Groups: ' = print_with_metric_prefix(length(unique(setup$grouping))),
+		'Parameters: ' = print_with_metric_prefix(length(setup$parameterWeights)),
+		check.names = FALSE),
+		row.names = FALSE, digits = 2, right = TRUE)
 	cat("\n")
 
 	# Call sglOptim
